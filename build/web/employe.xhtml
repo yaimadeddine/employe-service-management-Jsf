@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./template/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="ff">
+            <p:panel header="Employe Details">
+                <h:panelGrid columns="2">
+
+                    <h:outputLabel for="nom" value="Nom:"/>
+                    <p:inputText id="nom" value="#{employeBean.employe.nom}" required="true"/>
+
+                    <h:outputLabel for="prenom" value="Prenom:"/>
+                    <p:inputText id="prenom" value="#{employeBean.employe.prenom}" required="true"/>
+
+                    <h:outputLabel for="dateNaissance" value="Date Naissance:"/>
+                    <p:calendar id="dateNaissance" value="#{employeBean.employe.dateNaissance}" pattern="yyyy-MM-dd"/>
+
+                    <h:outputLabel for="photo" value="Photo:"/>
+                    <p:inputText id="photo" value="#{employeBean.employe.photo}"/>
+
+                    <h:outputLabel for="chef" value="Chef:"/>
+                    <p:selectOneMenu id="chef" value="#{employeBean.employe.chef}">
+                        <f:selectItem itemLabel="-- Select Chef --" itemValue="#{null}" />
+                        <f:selectItems value="#{employeBean.employes}" var="e" itemLabel="#{e.nom} #{e.prenom}" itemValue="#{e}"/>
+                    </p:selectOneMenu>
+
+                    <h:outputLabel for="service" value="Service:"/>
+                    <p:selectOneMenu id="service" value="#{employeBean.employe.service}">
+                        
+                        <f:selectItems value="#{serviceBean.services}" var="s" itemLabel="#{s.nom}" itemValue="#{s}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Ajouter" action="#{employeBean.onCreateAction()}" update=":f"/>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+        <h:form id="f">
+            <p:panel header="Liste des employés">
+                <p:dataTable id="employeTable" value="#{employeBean.employes}" var="employe" paginator="true"
+                             rows="10" >
+                    <p:column headerText="ID">
+                        #{employe.id}
+                    </p:column>
+                    <p:column headerText="Nom">
+                        #{employe.nom}
+                    </p:column>
+                    <p:column headerText="Prenom">
+                        #{employe.prenom}
+                    </p:column>
+                    <p:column headerText="Date Naissance">
+                        <h:outputText value="#{employe.dateNaissance}">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Photo">
+                        <h:outputText value="#{employe.photo}"/>
+                    </p:column>
+                    <p:column headerText="Chef">
+                        <h:outputText value="#{employe.chef.nom} #{employe.chef.prenom}"/>
+                    </p:column>
+
+                    <p:column headerText="Service">
+                        <h:outputText value="#{employe.service.nom}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
